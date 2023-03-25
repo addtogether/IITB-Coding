@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: rgba(40, 52, 62, 0.07);
+  --text-color: #242d49;
+  --content-color: rgba(255, 255, 255, 1);
+  --shadow-color: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);
+  --success-color: #28a745;
+  --failure-color: #dc3545;
+  --warning-color: #ffc107;
+  --primary-color: #007bff;
+  --info-color: #17a2b8;
+  --dark-color: #343a40;
+  --border-color: rgb(76, 168, 198);
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.btn {
+  display: flex;
+  gap: 2rem;
+  font-weight: bold;
+}
+
+::-webkit-scrollbar {
+  width: 0.2em;
+  height: 0.2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #787878;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d7d7d7;
+  border-radius: 20px;
+}
+
+.modalDiv{
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  z-index: 1;
+  transition: all 100ms ease-in-out;
+}
+
+.modalDiv.show{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 100ms ease-in-out;
+  z-index: 100;
+}
+
+.modalComponent{
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-color);
+  padding: 2rem;
+  width: 60%;
+  color: var(--text-color);
+  height: max-content;
+  transition: all 100ms ease-in-out;
+  position: relative;
+}
+
+.modalComponent.show {
+  transition: all 100ms ease-in-out;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modalContent .pillLayout {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.modalContent .pillLayout .chip {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 1rem 0.5rem;
+}
+
+.modalContent .decodedText {
+  padding: 1rem;
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.modalContent .decodedText p {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-close-btn {
+  color: white;
+  background-color: tomato;
+  border-radius: 50%;
+  padding: 0.5rem;
+  width: 36px !important;
+  height: 36px !important;
+  position: absolute;
+  top: 5%;
+  right: 3%;
+  cursor: pointer;
+}
+
+.countCardContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.countCardContainer .countCard {
+  border-radius: 10px;
+  display: flex;
+  padding: 1.5rem;
+  gap: 2rem;
+  color: var(--content-color);
+  opacity: 0.8;
+}
+
+.countCardContainer .countCard .left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.countCardContainer .countCard .left p {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.countCardContainer .countCard .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+}
+
+.countCardContainer .success { background-color: var(--success-color); }
+.countCardContainer .failure { background-color: var(--failure-color); }
+.countCardContainer .info { background-color: var(--info-color); }
+.countCardContainer .primary { background-color: var(--primary-color); }
+.countCardContainer .warning { background-color: var(--warning-color); }
+.countCardContainer .dark { background-color: var(--dark-color); }
+
+.MuiDataGrid-root .MuiDataGrid-cell {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
