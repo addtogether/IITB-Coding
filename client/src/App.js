@@ -38,7 +38,7 @@ function App() {
 
     const reader = new FileReader();
     reader.readAsText(selectedFile);
-    reader.onload = async => {
+    reader.onload = () => {
       const fileContents = JSON.parse(reader.result).data; 
       addFile(fileContents);
     }
