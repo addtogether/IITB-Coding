@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 import { Chip } from '@mui/material';
-import { Group, AccessTime, Numbers } from '@mui/icons-material'
-import { Close } from '@mui/icons-material'
+import { AccessTime, CalendarMonth, Api } from '@mui/icons-material'
+import { Close } from '@mui/icons-material';
 
 const Modal = ({ showPopup, setShowPopup, data }) => {
 
@@ -13,7 +13,7 @@ const Modal = ({ showPopup, setShowPopup, data }) => {
             
                 <Close
                     className="modal-close-btn"
-                    onClick={(e) => setShowPopup(false)}
+                    onClick={() => setShowPopup(false)}
                 />
             
                 <div className="modalContent">
@@ -21,24 +21,24 @@ const Modal = ({ showPopup, setShowPopup, data }) => {
                     <div className="pillLayout">
                         <Chip
                             className="chip failure"
-                            icon={<Group className="chip-icon" />}
-                            label={'Group: ' + data?.id}
+                            icon={<Api className="chip-icon" />}
+                            label={'API Call ID: ' + data?.apiCallId}
+                        />
+                        <Chip
+                            className="chip primary"
+                            icon={<CalendarMonth className="chip-icon" />}
+                            label={data?.apiCallTime}
                         />
                         <Chip
                             className="chip primary"
                             icon={<AccessTime className="chip-icon" />}
-                            label={'Time: ' + data?.apiResponseTime + ' mins'}
-                        />
-                        <Chip
-                            className="chip info"
-                            icon={<Numbers className="chip-icon" />}
-                            label="Count: 10"
+                            label={'Time: ' + data?.apiResponseTime + 's'}
                         />
                     </div>
                     
                     <div className="decodedText">
-                        <h4>Decoded Text</h4>
-                        <h2>{ data.apiResponse?.decodedText }</h2>
+                        <h5>Decoded Text</h5>
+                        <h4>{ data.apiResponse?.decodedText }</h4>
                     </div>
 
                     <div className="countCardContainer">
@@ -85,4 +85,4 @@ const Modal = ({ showPopup, setShowPopup, data }) => {
     );
 }
 
-export default Modal
+export default Modal;

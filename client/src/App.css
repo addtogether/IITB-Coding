@@ -1,3 +1,5 @@
+/* Navbar CSS */
+
 .Navbar {
   position: relative;
   display: flex;
@@ -10,6 +12,8 @@
   box-shadow: var(--shadow-color);
   cursor: pointer;
 }
+
+/* MainContent CSS */
 
 .MainContent {
   display: flex;
@@ -31,6 +35,8 @@
   border-radius: 1rem;
 }
 
+/* Left Content CSS */
+
 .MainContent .leftContent {
   width: 40%;
 }
@@ -41,6 +47,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .MainContent .leftContent .uploadFile {
@@ -53,6 +60,8 @@
   align-items: center;
   gap: 1rem;
 }
+
+/* Right Content CSS */
 
 .MainContent .rightContent {
   width: 59%;
@@ -73,7 +82,9 @@
 
 .MainContent .rightContent .pillLayout {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
   align-items: center;
   width: 100%;
 }
@@ -95,3 +106,30 @@
 .MainContent .rightContent .pillLayout .success {  background-color: var(--success-color) } 
 .MainContent .rightContent .pillLayout .failure {  background-color: var(--failure-color) } 
 .MainContent .rightContent .pillLayout .dark { background-color: var(--dark-color) }
+
+/* Media Queries */
+
+@media screen and (max-width: 1200px) {
+  .MainContent { flex-direction: column; gap: 2rem; }
+  .MainContent .leftContent { width: 100%; }
+  .MainContent .rightContent { width: 100%; }
+
+  .css-1xhypcz-MuiStack-root, .css-1gtlbg0 { flex-direction: row !important; width: 100% !important; gap: 1rem !important; }
+  .css-1xhypcz-MuiStack-root>.MuiTextField-root, .css-i44wyl { width: 100% !important; }
+  .css-1xhypcz-MuiStack-root>:not(style)+:not(style), .css-1gtlbg0 > :not(style) + :not(style) { margin: 0 !important; } 
+}
+
+@media screen and (max-width: 900px) {
+  .modalComponent { width: 80% !important; } 
+}
+
+@media screen and (max-width: 600px) {
+  .modalContent .decodedText h2 { font-size: 1rem; }
+  .countCardContainer .countCard .left { font-size: 1rem !important; }
+}
+
+@media screen and (max-width: 510px){
+  .MainContent .leftContent .uploadFile { flex-direction: column;}
+  .css-1xhypcz-MuiStack-root { flex-direction: column !important; }
+  .countCardContainer .countCard { padding: 0.5rem 1rem !important; }
+}

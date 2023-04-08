@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
+/* Root CSS */
+
 * {
   padding: 0;
   margin: 0;
@@ -38,15 +40,11 @@ a, a:hover, a:focus, a:active {
   color: inherit;
 }
 
-.btn {
-  display: flex;
-  gap: 2rem;
-  font-weight: bold;
-}
+h1 { text-align: center; }
 
 ::-webkit-scrollbar {
-  width: 0.2em;
-  height: 0.2em;
+  width: 0.4em;
+  height: 0.4em;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -58,6 +56,8 @@ a, a:hover, a:focus, a:active {
   background: #d7d7d7;
   border-radius: 20px;
 }
+
+/* Modal Component CSS */
 
 .modalDiv{
   background: rgba(0, 0, 0, 0.65);
@@ -88,6 +88,7 @@ a, a:hover, a:focus, a:active {
   box-shadow: var(--shadow-color);
   padding: 2rem;
   width: 60%;
+  margin: 2rem 0;
   color: var(--text-color);
   height: max-content;
   transition: all 100ms ease-in-out;
@@ -108,6 +109,7 @@ a, a:hover, a:focus, a:active {
 
 .modalContent .pillLayout {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
 }
@@ -151,9 +153,9 @@ a, a:hover, a:focus, a:active {
 }
 
 .countCardContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
@@ -162,8 +164,8 @@ a, a:hover, a:focus, a:active {
 .countCardContainer .countCard {
   border-radius: 10px;
   display: flex;
-  padding: 1.5rem;
-  gap: 2rem;
+  padding: 1rem;
+  gap: 1rem;
   color: var(--content-color);
   opacity: 0.8;
 }
@@ -172,7 +174,7 @@ a, a:hover, a:focus, a:active {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 36px;
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
 }
@@ -198,7 +200,16 @@ a, a:hover, a:focus, a:active {
 .countCardContainer .warning { background-color: var(--warning-color); }
 .countCardContainer .dark { background-color: var(--dark-color); }
 
+/* Material UI Custom CSS */
+
+.css-1xhypcz-MuiStack-root { 
+  width: 100%; 
+}
+
 .MuiDataGrid-root .MuiDataGrid-cell {
   white-space: normal !important;
   word-wrap: break-word !important;
+}
+.css-dwuj3p-MuiTableCell-root, .css-1ex1afd-MuiTableCell-root, .css-q34dxg {
+  padding: 10px 16px !important;
 }

@@ -1,63 +1,97 @@
-import React from 'react'
+import React, {useEffect} from 'react';
+import { io } from 'socket.io-client'
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import axios from "axios"
 
-import {
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-} from "@mui/material";
+import { MenuItem, Select, FormControl, InputLabel, Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Chip } from "@mui/material";
 
-import { Upload } from "@mui/icons-material";
+import { Upload, Done, Pending } from "@mui/icons-material";
 
-import dataLeft from "../data/dataLeft";
+// const baseUrl = 'http://localhost:5000'
+const baseUrl = 'https://IITB-Coding-server.onrender.com'
+const socket = io(baseUrl);
 
-const LeftContent = () => {
+const LeftContent = ({ handleFileUpload, selectedFile, setSelectedFile, setSelectedRow, getRightData, leftData, setLeftData }) => {
 
     const [fromDate, setFromDate] = React.useState(null);
     const [toDate, setToDate] = React.useState(null);
     const [storyId, setStoryId] = React.useState(null);
+    const [allStoryIds,setAllStoryIds] = React.useState([]);
+    
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [selectedRow, setSelectedRow] = React.useState({});
+    const [rowsPerPage, setRowsPerPage] = React.useState(3);
 
-    const columns = [
-        { field: 'id', headerName: 'Request ID', width: 140 },
-        { field: 'requestTime', headerName: 'Request Time', width: 180 },
-        { field: 'requestStatus', headerName: 'Status', width: 180 },
-    ]
+    socket.on('update-count', (updateLeft) => {
+        var lIdx = leftData.map((obj) => obj._id).indexOf(`${updateLeft._id}`);
+        leftData[lIdx] = updateLeft;
+        setLeftData([...leftData]);
+    })
+
+    socket.on('final-done', (data) => {
+        var lIdx = leftData.map((obj) => obj._id).indexOf(`${data._id}`);
+        leftData[lIdx] = data;
+        setLeftData([...leftData]);
+    })
+
+    useEffect(() => {
+        getAllStoryIds();
+    }, [leftData, fromDate, toDate]);
+
+    useEffect(() => {
+        if (fromDate !== null || toDate !== null || storyId !== null) {
+          filter();
+        }
+    }, [fromDate, toDate, storyId]);
+
+    // GET request for getting the story ids to populate Dropdown Options
+    const getAllStoryIds = async () => {
+        try {
+            const response = await axios.post(`${baseUrl}/api/storyId`, {
+                from: fromDate,
+                to: toDate
+            });
+            if (response.data.status === "success") setAllStoryIds(response.data.data)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    // Post request to filter the Left Data Table
+    const filter = async () => {
+        try {
+            const response = await axios.post(`${baseUrl}/api/filter`, {
+                from: fromDate,
+                to: toDate,
+                storyId: storyId
+            });
+            if (response.data.status === "success") setLeftData(response.data.data)
+        }
+        catch(error) {
+            console.log(error)
+        }
+    }
 
     const handleFromChange = (value) => {
         setFromDate(value)
-        console.log('From: ', value);
     }
 
     const handleToChange = (value) => {
         setToDate(value);
-        console.log('To: ', value);
-    }
+    };
     
-    const handleContainingChange = (e) => {
-        setStoryId(e.target.value);
-        console.log('Containing Story: ', e.target.value);
-    }
+    const handleContainingChange = (value) => {
+        setStoryId(value);
+    };
 
-    const handleRowClick = (row) => {
-        setSelectedRow(row);
-        console.log('Row clicked: ', selectedRow?.id);
-    }
+    const handleRowClick = (value) => {
+        setSelectedRow(value);
+        getRightData(value);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -68,6 +102,12 @@ const LeftContent = () => {
         setPage(0);
     };
 
+    const columns = [
+        { field: 'id', headerName: 'Request ID', align: 'center', width: 160 },
+        { field: 'requestTime', headerName: 'Request Time', align: 'center', width: 140 },
+        { field: 'requestStatus', headerName: 'Status', align: 'center', width: 70 },
+    ];
+
     return (
         <div className="leftContent">
             <h1>JSON Upload History</h1>
@@ -76,11 +116,13 @@ const LeftContent = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DatePicker"]}>
                         <DatePicker
+                            style={{ width: '100% !important' }}
                             label="From"
                             value={fromDate}
                             onChange={(newValue) => handleFromChange(newValue)}
                         />
                         <DatePicker
+                            style={{ width: '100% important' }}
                             label="To"
                             value={toDate}
                             onChange={(newValue) => handleToChange(newValue)}
@@ -96,56 +138,89 @@ const LeftContent = () => {
                         id="demo-simple-select-autowidth-label"
                         value={storyId}
                         label="Select your Field"
-                        onChange={handleContainingChange}
+                        onChange={(e) => handleContainingChange(e.target.value)}
                     >
-                        <MenuItem selected>Containing Story</MenuItem>
-                        <MenuItem value={"1"}>1</MenuItem>
-                        <MenuItem value={"2"}>2</MenuItem>
-                        <MenuItem value={"3"}>3</MenuItem>
+                        <MenuItem value={"all"} selected>All</MenuItem>
+                        {
+                            allStoryIds
+                            .map((id) => {
+                                return <MenuItem value={id} key={id}>{id}</MenuItem>
+                            })
+                        }
                     </Select>
                 </FormControl>
             </form>
 
             <div style={{ height: 265, width: "100%" }}>
-                <TableContainer sx={{ maxHeight: 220 }}>
+                <TableContainer sx={{ maxHeight: 230 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow >
                                 {
                                     columns.map((column) => (
                                         <TableCell
-                                            key={column.field}
-                                            // align={column.align}
+                                            key={ column.field }
+                                            align = { column.align }
                                             style={{ minWidth: column.width }}
                                         >
-                                            {column.headerName}
+                                            { column.headerName }
                                         </TableCell>
                                     ))
                                 }
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
-                                dataLeft
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
+                            { 
+                                leftData.length > 0 
+                                ? (
+                                    leftData
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row) => {
 
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id} onClick={() => handleRowClick(row)}>
-                                            <TableCell>{ row['id'] }</TableCell>
-                                            <TableCell>{ row['requestTime'] }</TableCell>
-                                            <TableCell>{ row['requestStatus'] }</TableCell>
-                                        </TableRow>
-                                    );
-                                })
-                            }
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row._id} onClick={() => handleRowClick(row._id)}>
+                                                <TableCell style={{ textAlign: 'center' }}>{ row._id }</TableCell>
+                                                <TableCell style={{ textAlign: 'center' }}>{ new Date(row.requestTime).toLocaleString() }</TableCell>
+                                                <TableCell style={{ textAlign: 'center' }}>
+                                                    {
+                                                        row.requestStatus === 'Processing' 
+                                                        ? (
+                                                            <Chip
+                                                                size='small'
+                                                                className="chip"
+                                                                style={{ backgroundColor: 'var(--warning-color)', color: '#fff', fontWeight: 'bold' }}
+                                                                label={ row.requestStatus }
+                                                                icon={<Pending className="chip-icon" style = {{ color: '#fff' }} />}
+                                                            />
+                                                        ) 
+                                                        : (
+                                                            <Chip
+                                                                size='small'
+                                                                className="chip"
+                                                                style={{ backgroundColor: 'var(--success-color)', color: '#fff', fontWeight: 'bold' }}
+                                                                label={ row.requestStatus }
+                                                                icon={<Done className="chip-icon" style = {{ color: '#fff' }} />}
+                                                            />
+                                                        )
+                                                    }
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })
+                                )
+                                : (
+                                    <TableRow hover role="checkbox" tabIndex={-1}>
+                                        <TableCell colSpan={3} style={{ textAlign: 'center' }}>No Data Found</TableCell>
+                                    </TableRow>
+                                )
+                            } 
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10]}
                     component="div"
-                    count={dataLeft.length}
+                    count={leftData.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -154,14 +229,21 @@ const LeftContent = () => {
             </div>
 
             <form action="/post" className="uploadFile">
-                <Button variant="text" component="label" className="btn">
+                <Button variant="text" component="label" style={{ textTransform: 'capitalize', gap: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
                     <Upload />
-                    <label class="form-label" for="customFile">
-                        Upload your JSON file here
+                    <label className="form-label" htmlFor="customFile" style={{ cursor: 'pointer' }}>
+                        { selectedFile ? selectedFile.name : 'Upload your Json file here' }
                     </label>
-                    <input hidden type="file" class="form-control" id="customFile" />
+                    <input  
+                        hidden
+                        type="file"
+                        accept=".json, application/json"
+                        onChange={(event) => setSelectedFile(event.target.files[0])}
+                        className="form-control btn"
+                        id="customFile" 
+                    />
                 </Button>
-                <Button variant="contained" component="label" className="btn">
+                <Button  onClick={handleFileUpload} variant="contained" component="label" className="btn">
                     Submit
                 </Button>
             </form>
@@ -169,4 +251,4 @@ const LeftContent = () => {
     );
 }
 
-export default LeftContent
+export default LeftContent;
