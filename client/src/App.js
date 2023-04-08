@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // const baseUrl = 'http://localhost:5000'
-const baseUrl = 'https://IITB-Coding-server.onrender.com'
+const baseUrl = 'https://iitb-coding-server.onrender.com'
 
 function App() {
 

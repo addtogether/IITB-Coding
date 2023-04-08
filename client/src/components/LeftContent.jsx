@@ -12,7 +12,7 @@ import { MenuItem, Select, FormControl, InputLabel, Button, Table, TableBody, Ta
 import { Upload, Done, Pending } from "@mui/icons-material";
 
 // const baseUrl = 'http://localhost:5000'
-const baseUrl = 'https://IITB-Coding-server.onrender.com'
+const baseUrl = 'https://iitb-coding-server.onrender.com'
 const socket = io(baseUrl);
 
 const LeftContent = ({ handleFileUpload, selectedFile, setSelectedFile, setSelectedRow, getRightData, leftData, setLeftData }) => {

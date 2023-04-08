@@ -5,7 +5,7 @@ import { Button, Chip, Table, TableBody, TableCell, TableContainer, TableHead, T
 import { Group, AccessTime, Numbers, DriveFileMove, Pending, Done, SmsFailedOutlined, WarningAmber } from "@mui/icons-material";
 
 // const baseUrl = 'http://localhost:5000'
-const baseUrl = 'https://IITB-Coding-server.onrender.com'
+const baseUrl = 'https://iitb-coding-server.onrender.com'
 const socket = io(baseUrl);
 
 const RightContent = ({ selectedRow, leftData, rightData, setRightData, setShowPopup, setModalData }) => {
@@ -158,6 +158,21 @@ const RightContent = ({ selectedRow, leftData, rightData, setRightData, setShowP
                                                                         }}
                                                                         label={row.apiCallStatus}
                                                                         icon={<Done className="chip-icon" style = {{ color: '#fff' }} />}
+                                                                    />
+                                                                )
+                                                            }
+                                                            {
+                                                                row.apiCallStatus === 'Failed' && (
+                                                                    <Chip
+                                                                        size='small'
+                                                                        className="chip"
+                                                                        style={{
+                                                                            backgroundColor: 'var(--failure-color)',
+                                                                            color: '#fff',
+                                                                            fontWeight: 'bold',
+                                                                        }}
+                                                                        label={row.apiCallStatus}
+                                                                        icon={<SmsFailedOutlined className="chip-icon" style = {{ color: '#fff' }} />}
                                                                     />
                                                                 )
                                                             }
