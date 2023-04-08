@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { io } from 'socket.io-client'
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -17,13 +17,13 @@ const socket = io(baseUrl);
 
 const LeftContent = ({ handleFileUpload, selectedFile, setSelectedFile, setSelectedRow, getRightData, leftData, setLeftData }) => {
 
-    const [fromDate, setFromDate] = React.useState(null);
-    const [toDate, setToDate] = React.useState(null);
-    const [storyId, setStoryId] = React.useState(null);
-    const [allStoryIds,setAllStoryIds] = React.useState([]);
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
+    const [storyId, setStoryId] = useState(null);
+    const [allStoryIds,setAllStoryIds] = useState([]);
     
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(3);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(3);
 
     socket.on('update-count', (updateLeft) => {
         var lIdx = leftData.map((obj) => obj._id).indexOf(`${updateLeft._id}`);

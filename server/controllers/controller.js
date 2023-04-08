@@ -2,9 +2,6 @@ const ApiResponse = require("../models/ApiResponse");
 const JsonFile = require("../models/JsonFile");
 const axios = require("axios");
 
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
-
 const getFiles = async (req, res) => {
     try {
         const data = await JsonFile.find().sort({ requestTime: -1 });
@@ -149,7 +146,7 @@ const filter = async (req, res) => {
             let toDate = new Date(to)
             toDate.setHours(23, 59, 59)
             if (!filter.createdAt) filter.createdAt = {};
-            filter.createdAt.$lte = toDate;
+            filter.createdAt = { $lte: toDate };
         }
         if (storyId) {
             let apiResponses = []
@@ -183,7 +180,7 @@ const filter = async (req, res) => {
 // Step-1: Loop fileContents 
 // Step-2: Call SAS API
 // Step-3: Get Response from SAS API
-// Step-4: Update Status in DB and Send to Client (Incomplete)
+// Step-4: Update Status in DB and Send to Client
 
 const callSasAPI = async (fileContents, leftDataId, rightData) => {
     try {
