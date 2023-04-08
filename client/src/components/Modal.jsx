@@ -27,7 +27,7 @@ const Modal = ({ showPopup, setShowPopup, data }) => {
                         <Chip
                             className="chip primary"
                             icon={<CalendarMonth className="chip-icon" />}
-                            label={data?.apiCallTime}
+                            label={new Date(data?.apiCallTime).toLocaleString()}
                         />
                         <Chip
                             className="chip primary"
